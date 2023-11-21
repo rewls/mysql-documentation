@@ -1,47 +1,5 @@
 # Ch3 Tutorial
 
-## Contents
-
-- Ch3 Tutorial
-
-    - 3.1 Connecting to and Disconnecting from the Server
-
-    - 3.2 Entering Queries
-
-    - 3.3 Creating and Using a Database
-
-        - 3.3.1 Creating and Selecting a Database
-
-        - 3.3.2 Creating a Table
-
-        - 3.3.3 Loading Data into a Table
-
-        - 3.3.4 Retrieving Information from a Table
-
-            - 3.3.4.1 Selecting All Data
-
-            - 3.3.4.2 Selecting Particular Rows
-
-            - 3.3.4.3 Selecting Particular Columns
-
-            - 3.3.4.4 Sorting Rows
-
-            - 3.3.4.5 Date Calculations
-
-            - 3.3.4.6 Working with NULL Values
-
-            - 3.3.4.7 Pattern Matching
-
-            - 3.3.4.8 Counting Rows
-
-            - 3.3.4.9 Using More Than one Table
-
-    - 3.4 Getting Information about Databases and Tables
-
-    - 3.5 Using mysql in Batch Mode
-
-    - 3.6 Examples of Common Queries
-
 ## Keywords
 
 ### 3.1 Connecting to and Disconnecting from the Server
@@ -84,7 +42,7 @@
 
 - `\N`, `load data local infile <path> into table <table>;`
 
-    - [Section 6.1.6 Security Considerations for LOAD DATA LOCAL](https://dev.mysql.com/doc/refman/8.0/en/load-data-local-security.html)
+    - [Section 6.1.6 Security Considerations for LOAD DATA LOCAL](ch06-security.md#6.1.6-security-considerations-for-load-data-local)
 
 - `insert into <table> values (...);`, `NULL`
 
@@ -92,39 +50,80 @@
 
 - `select <what_to_select> from <which_table> where <conditions_to_satisfy>;`
 
+##### 3.3.4.1 Selecting All Data
+
+```sql
+select * from <table name>;
+```
+
+```sql
+update <table name> set <content> where <condition>;
+```
+
+- invisible column, see Section 13.1.20.10 Invisible Columns
+
 ##### 3.3.4.2 Selecting Particular Rows
+
+```sql
+select * from <table name> where <condition>;
+```
+
+- `and`, `or` logical operator
+
+- `and` higher precedence than `or`
 
 - string comparisons are case-insensitive
 
 ##### 3.3.4.3 Selecting Particular Columns
 
-- `select distinct <columns> from <table>;`
+```sql
+select distinct <columns> from <table>;
+```
 
 ##### 3.3.4.4 Sorting Rows
 
-- `select <columns> from <table> order by <columns>;`
+```sql
+select <columns> from <table> order by <columns>;
+```
 
-- `select <columns> from <table> order by binary <columns>;`
+```sql
+select <columns> from <table> order by binary <columns>;
+```
 
-- `select <columns> from <table> order by <columns> desc;`
+```sql
+select <columns> from <table> order by <columns> desc;
+```
 
 ##### 3.3.4.5 Date Calculations
 
-- `select name, birth, curdate(), timestampdiff(year, birth, curdate()) as age from pet;`
+```sql
+select name, birth, curdate(), timestampdiff(year, birth, curdate()) as age from pet;
+```
 
-- `select name, birth, death, timestampdiff(year, birth, death) as age from pet where death is not null order by age;`
+```sql
+select name, birth, death, timestampdiff(year, birth, death) as age
+from pet where death is not null order by age;
+```
 
 - `year()`, `month()`, `dayofmonth()`, `month()`
 
-- `select name, birth from pet where month(birth) = month(date_add(curdate(), interval 1 month));
+```sql
+select name, birth from pet where month(birth) = month(date_add(curdate(), interval 1 month));
+```
 
-- `select name, birth from pet where month(birth) = mod(month(curdate()), 12) + 1;
+```sql
+select name, birth from pet where month(birth) = mod(month(curdate()), 12) + 1;
+```
 
-- `show warnings;`
+```sql
+show warnings;
+```
 
 ##### 3.3.4.6 Working with NULL Values
 
-- `select 1 = null, 1 <> null, 1 < null, 1 > null;`
+```sql
+select 1 = null, 1 <> null, 1 < null, 1 > null;
+```
 
 ##### 3.3.4.7 Pattern Matching
 
@@ -132,29 +131,64 @@
 
 - `regexp_like()`, `.`, `[...]`, `*`, `^`, `$`, `{n}`
 
-- `select * from pet where regexp_like(name, '^b', collate utf8mb4_0900_as_cs);
+```sql
+select * from pet where regexp_like(name, '^b', collate utf8mb4_0900_as_cs);
+```
 
-- `select * from pet where regexp_like(name, binary '^b');
+```sql
+select * from pet where regexp_like(name, binary '^b');
+```
 
-- `select * from pet where regexp_like(name, '^b', 'c');
+```sql
+select * from pet where regexp_like(name, '^b', 'c');
+```
 
 ##### 3.3.4.8 Counting Rows
 
 - `count(*)`
 
-- `select species, sex, count(*) from pet group by species, sex`
+```sql
+select species, sex, count(*) from pet group by species, sex
+```
 
 ##### 3.3.4.9 Using More Than one Table
 
-- `select pet.name, timestampdiff(year, birth, date) as age, remark from pet inner join event on pet.name = event.name where event.type = 'litter';`
+```sql
+select pet.name, timestampdiff(year, birth, date) as age, remark
+from pet inner join event on pet.name = event.name where event.type = 'litter';
+```
 
 ### 3.4 Getting Information about Databases and Tables
 
-- `show databases;`, `database()`
+```sql
+show databases;
+````
 
-- `show tables;` `describe`, `desc`
+```sql
+show tables;
+```
 
-- `show create table`, `show index from <table>`
+- see Section 13.7.7.39 SHOW TABLES Statement
+
+```sql
+describe <table name>
+```
+
+```sql
+desc <table name>
+```
+
+- `Field`, `Type`, `Null`, `Key`,  `Default`, `Extra`
+
+- see Section 13.8.1 DESCRIBE Statement
+
+- `create table` statement, existing table, `show create table`
+
+    - see Section 13.7.7.10 SHOW CREATE TABLE Statement
+
+- `show index from <table>`
+
+    - see Section 13.7.7.22 SHOW INDEX Statement
 
 ### 3.5 Using mysql in Batch Mode
 
@@ -170,13 +204,12 @@ $ mysql -e "source <file name>"
 
 - `mysql -t`, `mysql-v`
 
-```sh
+```sql
 mysql> source <file name>
-```
-
-```sh
 mysql> \. <file name>
 ```
+
+- see Section 4.5.1.5 Executing SQL Statements from a Text File
 
 ### 3.6 Examples of Common Queries
 
@@ -435,7 +468,7 @@ select * from animals;
 
 ```sql
 alter table tb1 auto_increment = 100;
-`
+```
 
 ##### InnoDB Notes
 
@@ -443,7 +476,7 @@ alter table tb1 auto_increment = 100;
 
 ##### MyISAM Notes
 
-- auto_increment`, secondary column, multiple-column index
+- `auto_increment`, secondary column, multiple-column index
 
 ```sql
 create table animals (
@@ -461,7 +494,7 @@ insert into animals (grp,name) values
 select * from animals order by grp,id;
 ```
 
-- reuse deleted biggest auto_increment value
+- reuse deleted biggest `auto_increment` value
 
 ##### Further Reading
 
@@ -477,7 +510,7 @@ select * from animals order by grp,id;
 
 - replication, Section 17.5.1.1 Replication and AUTO_INCREMENT
 
-- server-system variables, `auto_increment_increment`, auto_increment_offset`, Section 5.1.8 Server System Variables
+- server-system variables, `auto_increment_increment`, `auto_increment_offset`, Section 5.1.8 Server System Variables
 
 ### 3.7 Using MySQL with Apache
 

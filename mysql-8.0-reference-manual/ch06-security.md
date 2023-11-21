@@ -6,13 +6,13 @@
 
 #### [6.1.6 Security Considerations for LOAD DATA LOCAL](https://dev.mysql.com/doc/refman/8.0/en/load-data-local-security.html)
 
-- `LOAD DATA`, server host, `LOCAL`, client host
+- `load data`, server host, `local`, client host
 
-- `LOCAL`, security issue
+- `local`, security issue
 
     - server side parsing, MySQL server initiate, server access any file on the client host
 
-    - web environment, webserver use `LOAD DATA LOCAL` to read any file that the Web server process has read access to
+    - web environment, webserver use `load data local` to read any file that the Web server process has read access to
 
 - client, secure connection, server identity, `--ssl-mod=VERIFY_IDENTITY` option, CA cerficate
 
@@ -22,7 +22,7 @@
 
 - server side
 
-    - `local_infile`, system variable, server-side `LOCAL` capability, default desable
+    - `local_infile`, system variable, server-side `local` capability, default desable
 
     - start `mysqld` with `local_infile`
 
@@ -30,7 +30,7 @@
 
 - client side
 
-    - `ENABLED_LOCAL_INFILE` CMake option, compiled-in default `lOCAL` capability for the MySQL client library
+    - `ENABLED_LOCAL_INFILE` CMake option, compiled-in default `local` capability for the MySQL client library
 
         - see Section 2.8.7 MySQL Source-Configuration Options
 

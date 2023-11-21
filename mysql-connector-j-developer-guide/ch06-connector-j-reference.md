@@ -38,7 +38,7 @@
 
 - `allowLoadLocalInfile`
 
-    - `LOAD DATA LOCAL INFILE ...`
+    - `load data local infile ...`
 
     - default value false, since version 3.0.3
 
